@@ -1,0 +1,32 @@
+{
+    "name": "patrikap/p1sms",
+    "version": "1.0.0",
+    "description": "PHP adapter for work with p1sms API gateway",
+    "keywords": [
+        "p1sms",
+        "api",
+        "sms",
+        "patrikap"
+    ],
+    "homepage": "https://github.com/patrikap/p1sms",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Konstantin K.",
+            "email": "patrikap@gmail.com",
+            "homepage": "http://patrikap.ru",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^5.6",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Patrikap\\P1sms\\": "src/"
+        }
+    }
+}
