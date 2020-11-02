@@ -15,26 +15,27 @@ use Patrikap\P1sms\DTO\AbstractBaseRequest;
  */
 class DataProvider
 {
-    protected $url;
+    protected string $url;
     /** @var AbstractBaseRequest */
-    protected $request;
+    protected AbstractBaseRequest $request;
+    /** @var mixed */
     protected $response;
 
-    public function setUrl($url)
+    public function setUrl($url):self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function setRequest(AbstractBaseRequest $request)
+    public function setRequest(AbstractBaseRequest $request):self
     {
         $this->request = $request;
 
         return $this;
     }
 
-    public function execute()
+    public function execute():self
     {
         if ($curl = curl_init()) {
             $json = json_encode($this->request->getData());

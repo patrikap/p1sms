@@ -15,5 +15,5 @@ interface ArrayAble
      *
      * @return array
      */
-    public function getData();
+    public function getData():array;
 }

@@ -15,30 +15,30 @@ use Patrikap\P1sms\DTO\Contracts\ArrayAble;
  */
 abstract class AbstractMessage implements ArrayAble
 {
-    const CHAR_CHANNEL = 'char';
+    protected const CHAR_CHANNEL = 'char';
     /** @var string[] поддерживаемые каналы сообщений  (digit, char, viber, vk, telegram) */
-    private $channels = [self::CHAR_CHANNEL];
+    private array $channels = [self::CHAR_CHANNEL];
     /** @var string Номер телефона required */
-    protected $phone;
+    protected string $phone;
     /** @var string Текст сообщения */
-    protected $text;
+    protected string $text;
     /** @var string Ссылка для подстановки */
-    protected $link;
+    protected string $link;
     /** @var string Канал сообщений required */
-    protected $channel;
+    protected string $channel;
     /** @var string Имя отправителя required */
-    protected $sender;
+    protected string $sender;
     /** @var int Количество секунд Unix timestamp */
-    protected $plannedAt;
+    protected int $plannedAt;
     /** @var int ID схемы каскадных смс */
-    protected $cascadeSchemeId;
+    protected int $cascadeSchemeId;
 
 
     /**
      * @param string $phone
      * @return $this
      */
-    public function setPhone($phone)
+    public function setPhone(string $phone): self
     {
         //if (is_string($phone)) {
         //    $this->phone = substr($phone, 0, 11);
@@ -52,7 +52,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param string $text
      * @return $this
      */
-    public function setText($text)
+    public function setText(string $text): self
     {
         if (is_string($text)) {
             $this->text = $text;
@@ -65,7 +65,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param string $link
      * @return $this
      */
-    public function setLink($link)
+    public function setLink(string $link): self
     {
         if (is_string($link)) {
             $this->link = $link;
@@ -78,9 +78,9 @@ abstract class AbstractMessage implements ArrayAble
      * @param string $channel
      * @return $this
      */
-    protected function setChannel($channel)
+    protected function setChannel(string $channel): self
     {
-        if (is_string($channel) && in_array($channel, $this->channels)) {
+        if (is_string($channel) && in_array($channel, $this->channels, true)) {
             $this->channel = $channel;
         }
 
@@ -91,11 +91,9 @@ abstract class AbstractMessage implements ArrayAble
      * @param string $sender
      * @return $this
      */
-    public function setSender($sender)
+    public function setSender(string $sender): self
     {
-        if (is_string($sender)) {
-            $this->sender = $sender;
-        }
+        $this->sender = $sender;
 
         return $this;
     }
@@ -104,7 +102,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param DateTimeInterface $plannedAt
      * @return $this
      */
-    public function setPlannedAt($plannedAt)
+    public function setPlannedAt(DateTimeInterface $plannedAt):self
     {
         if ($plannedAt instanceof DateTimeInterface) {
             $this->plannedAt = $plannedAt->getTimestamp();
@@ -117,7 +115,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param int $cascadeSchemeId
      * @return $this
      */
-    public function setCascadeSchemeId($cascadeSchemeId)
+    public function setCascadeSchemeId(int $cascadeSchemeId):self
     {
         if (is_int($cascadeSchemeId)) {
             $this->cascadeSchemeId = $cascadeSchemeId;
@@ -132,14 +130,15 @@ abstract class AbstractMessage implements ArrayAble
      * @return bool
      * @throws Exception
      */
-    abstract protected function validateField();
+    abstract protected function validateField(): bool;
 
     /**
      * получает данные
      *
      * @return mixed
+     * @throws Exception
      */
-    public function getData()
+    public function getData(): array
     {
         $data = [];
         $this->validateField();

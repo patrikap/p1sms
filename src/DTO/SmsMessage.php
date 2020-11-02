@@ -3,7 +3,7 @@
 namespace Patrikap\P1sms\DTO;
 
 
-use Exception;
+use RuntimeException;
 
 /**
  * Class SmsMessage
@@ -20,7 +20,7 @@ class SmsMessage extends AbstractMessage
      * @param string $to
      * @param string $text
      */
-    public function __construct($from, $to, $text)
+    public function __construct(string $from, string $to, string $text)
     {
         $this->setSender($from)
             ->setPhone($to)
@@ -29,10 +29,10 @@ class SmsMessage extends AbstractMessage
     }
 
     /** @inheritDoc */
-    protected function validateField()
+    protected function validateField(): bool
     {
         if (!$this->phone || !$this->channel || !$this->sender) {
-            throw new Exception('Not valid data');
+            throw new RuntimeException('Not valid data');
         }
 
         return true;

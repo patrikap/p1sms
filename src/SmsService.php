@@ -17,28 +17,29 @@ use Patrikap\P1sms\DTO\SmsMessage;
  */
 class SmsService
 {
-    const SEND_SMS_URL = 'https://admin.p1sms.ru/apiSms/create';
-    protected $apiKey;
-    protected $dataProvider;
+    protected const SEND_SMS_URL = 'https://admin.p1sms.ru/apiSms/create';
+    protected string $apiKey;
+    protected DataProvider $dataProvider;
 
     /**
      * SmsService constructor.
      * @param $apiKey
      */
-    public function __construct($apiKey)
+    public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
         $this->dataProvider = new DataProvider();
     }
 
     /**
-     * @param $from
-     * @param $to
-     * @param $text
-     * @param null $webHookUrl
+     * @param string $from
+     * @param string $to
+     * @param string $text
+     * @param string|null $webHookUrl
+     * @return mixed
      * @throws Exception
      */
-    public function sendMessage($from, $to, $text, $webHookUrl = null)
+    public function sendMessage(string $from, string $to, string $text, ?string $webHookUrl = null)
     {
         $message = new SmsMessage($from, $to, $text);
         $request = (new CreateRequest($this->apiKey))
@@ -46,6 +47,7 @@ class SmsService
         if ($webHookUrl) {
             $request->setWebhookUrl($webHookUrl);
         }
+
         return $this->dataProvider->setUrl(static::SEND_SMS_URL)
             ->setRequest($request)
             ->execute()

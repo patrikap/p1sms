@@ -2,8 +2,8 @@
 
 namespace Patrikap\P1sms\DTO;
 
-use Exception;
 use Patrikap\P1sms\DTO\Contracts\ArrayAble;
+use RuntimeException;
 
 /**
  * Class AbstractBaseRequest
@@ -15,19 +15,19 @@ use Patrikap\P1sms\DTO\Contracts\ArrayAble;
 abstract class AbstractBaseRequest implements ArrayAble
 {
     /** @var string API ключ вы можете найти в разделе «‎Настройки API»‎ */
-    protected $apiKey;
+    protected string $apiKey;
 
     public function __construct($apiKey)
     {
         if (is_string($apiKey)) {
             $this->apiKey = $apiKey;
         } else {
-            throw new Exception('Api KEY should be a string');
+            throw new RuntimeException('Api KEY should be a string');
         }
     }
 
     /** @inheritDoc */
-    public function getData()
+    public function getData():array
     {
         return [
             'apiKey' => $this->apiKey,

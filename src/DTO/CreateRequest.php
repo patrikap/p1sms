@@ -3,6 +3,7 @@
 namespace Patrikap\P1sms\DTO;
 
 use Exception;
+use RuntimeException;
 
 /**
  * Class CreateRequest
@@ -14,21 +15,21 @@ use Exception;
  */
 class CreateRequest extends AbstractBaseRequest
 {
-    const MAX_MESSAGES = 1000;
-    /** @var string URL для отправки изменений статуса */
-    protected $webhookUrl;
+    protected const MAX_MESSAGES = 1000;
+    /** @var string|null URL для отправки изменений статуса */
+    protected ?string $webhookUrl=null;
     /** @var array sms Список сообщений */
-    protected $messages = [];
+    protected array $messages = [];
 
     /**
      * @param AbstractMessage $message
      * @return $this
      * @throws Exception
      */
-    public function addMessage(AbstractMessage $message)
+    public function addMessage(AbstractMessage $message):self
     {
         if (count($this->messages) > self::MAX_MESSAGES) {
-            throw new Exception('Превышен лимит сообщений');
+            throw new RuntimeException('Превышен лимит сообщений');
         }
         $this->messages[] = $message->getData();
 
@@ -39,18 +40,20 @@ class CreateRequest extends AbstractBaseRequest
      * @param string $webhookUrl
      * @return $this
      */
-    public function setWebhookUrl($webhookUrl)
+    public function setWebhookUrl(string $webhookUrl):self
     {
         $this->webhookUrl = $webhookUrl;
 
         return $this;
     }
 
-    /** @inheritDoc */
-    public function getData()
+    /** @inheritDoc
+     * @throws Exception
+     */
+    public function getData():array
     {
         if (!count($this->messages)) {
-            throw new Exception('Messages is empty');
+            throw new RuntimeException('Messages is empty');
         }
 
         return array_merge(parent::getData(), [
