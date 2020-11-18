@@ -22,16 +22,16 @@ abstract class AbstractMessage implements ArrayAble
     protected string $phone;
     /** @var string Текст сообщения */
     protected string $text;
-    /** @var string Ссылка для подстановки */
-    protected string $link;
+    /** @var string|null Ссылка для подстановки */
+    protected ?string $link = null;
     /** @var string Канал сообщений required */
     protected string $channel;
     /** @var string Имя отправителя required */
     protected string $sender;
-    /** @var int Количество секунд Unix timestamp */
-    protected int $plannedAt;
-    /** @var int ID схемы каскадных смс */
-    protected int $cascadeSchemeId;
+    /** @var int|null Количество секунд Unix timestamp */
+    protected ?int $plannedAt = null;
+    /** @var int|null ID схемы каскадных смс */
+    protected ?int $cascadeSchemeId = null;
 
 
     /**
@@ -102,7 +102,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param DateTimeInterface $plannedAt
      * @return $this
      */
-    public function setPlannedAt(DateTimeInterface $plannedAt):self
+    public function setPlannedAt(DateTimeInterface $plannedAt): self
     {
         if ($plannedAt instanceof DateTimeInterface) {
             $this->plannedAt = $plannedAt->getTimestamp();
@@ -115,7 +115,7 @@ abstract class AbstractMessage implements ArrayAble
      * @param int $cascadeSchemeId
      * @return $this
      */
-    public function setCascadeSchemeId(int $cascadeSchemeId):self
+    public function setCascadeSchemeId(int $cascadeSchemeId): self
     {
         if (is_int($cascadeSchemeId)) {
             $this->cascadeSchemeId = $cascadeSchemeId;
